@@ -4,36 +4,36 @@ module.exports = {
   getIndex: function (req, res) {
     Book.find()
       .then(book => {
-        res.render('index', {
-          'title': book.title,
-          'author': book.author,
-          'price': book.price
-          
-        })
+        return res.render('index', { books: book })
       })
     
   },
   getCreate: function (req, res) {
-    // TODO:
     res.render('create');
   },
   postCreate: function (req, res) {
-    // TODO:
-    console.log(req.body);
     Book.create(req.body)
       .then(() => res.redirect('/'))
       .catch((err) => console.log(err));
   },
   getEdit: function (req, res) {
-    // TODO:
+    Book.findById(req.params.id)
+      .then(books => res.render('edit', { book: books }))
+      .catch((err) => console.log(err));
   },
   postEdit: function (req, res) {
-    // TODO:
+    Book.findByIdAndUpdate(req.params.id, req.body)
+      .then(() => res.redirect('/'))
+      .catch((err) => console.log(err));
   },
   getDelete: function (req, res) {
-    // TODO:
+    Book.findById(req.params.id)
+      .then((book) => res.render('delete', {book}))
+      .catch((err) => console.log(err));
   },
   postDelete: function (req, res) {
-    // TODO:
+    Book.findByIdAndDelete(req.params.id, req.body)
+      .then(() => res.redirect('/'))
+      .catch((err) => console.log(err));
   }
 };
